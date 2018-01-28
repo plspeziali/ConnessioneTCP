@@ -6,8 +6,10 @@
 package TCPConnection;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.net.ConnectException;
@@ -32,7 +34,17 @@ public class ClientTCP {
         try{
             connection = new Socket(serverAddress, port);
             System.out.println("Connessione aperta");
+            System.out.println("Digita il tipo della richiesta che vuoi effettuare (es. orario): ");
             BufferedReader tastiera = new BufferedReader(new InputStreamReader(System.in));
+            String richiesta=tastiera.readLine();
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+            out.write(richiesta);
+            String fromServer = null;
+            while ((fromServer = in.readLine()) != null) {
+                System.out.println("Server: " + fromServer);
+                break;
+            }
         }
         catch(ConnectException e){
             System.err.println("Server non disponibile!");
