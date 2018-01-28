@@ -44,10 +44,14 @@ public class ServerTCP {
                 System.out.println("Connessione stabilita!");
                 System.out.println("Socket server: " + connection.getLocalSocketAddress());
                 System.out.println("Socket client: " + connection.getRemoteSocketAddress());
+                // stream in input (BufferedReader) e in output (PrintWriter)
+                // che ci permetteranno di scambiare messaggi tra client e server
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 //BufferedWriter out = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
                 PrintWriter out = new PrintWriter(connection.getOutputStream(), true);
                 String fromClient = null;
+                // quando arriva un messaggio dal client, e quindi lo stream non
+                // è vuoto, scrivo sullo stream di output l'orario
                 while ((fromClient = in.readLine()) != null) {
                     System.out.println(fromClient);
                     if(fromClient.equals("orario")){
