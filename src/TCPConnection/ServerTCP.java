@@ -5,11 +5,17 @@
  */
 package TCPConnection;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -38,6 +44,17 @@ public class ServerTCP {
                 System.out.println("Connessione stabilita!");
                 System.out.println("Socket server: " + connection.getLocalSocketAddress());
                 System.out.println("Socket client: " + connection.getRemoteSocketAddress());
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                //BufferedWriter out = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+                PrintWriter out = new PrintWriter(connection.getOutputStream(), true);
+                String fromClient = null;
+                while ((fromClient = in.readLine()) != null) {
+                    System.out.println(fromClient);
+                    if(fromClient.equals("orario")){
+                        out.println(getTime());
+                    }
+                    break;
+                }
             }
                catch(IOException e){
                    System.err.println("Errore di I/O!");
@@ -52,4 +69,10 @@ public class ServerTCP {
             System.out.println("Connessione chiusa!");
         }
       }
+    
+    static String getTime(){
+        DateFormat dateFormat = new SimpleDateFormat(" HH:mm:ss - dd/MM/yyyy");
+        Date date = new Date();
+        return (dateFormat.format(date));
+    }
 }
