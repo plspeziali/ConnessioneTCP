@@ -1,6 +1,6 @@
 /*
  * Versione dell'applicazione in cui lo stream output è gestito con un oggetto
- * PrintWriter e lo stream di input con BufferedReader
+ * PrintWriter e lo stream di input con Scanner
  */
 package TCPConnection;
 
@@ -12,6 +12,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,43 +25,29 @@ public class ServerTCP {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // porta del server maggiore di 1024 
+        // Porta del server maggiore di 1024 
         int port=2000;
-        //oggetto ServerSocket necessario per accettare richieste dal client
+        // Oggetto ServerSocket necessario per accettare richieste dal client
         ServerSocket sSocket = null;
-        //oggetto da usare per realizzare la connessione TCP
+        // Oggetto da usare per realizzare la connessione TCP
         Socket connection;
-
         while(true){
             try{
-                // il server si mette in ascolto sulla porta voluta
+                // Il server si mette in ascolto sulla porta voluta
                 sSocket = new ServerSocket(port);
                 System.out.println("In attesa di connessioni!");
-                //si è stabilita la connessione
+                // Si stabilisce la connessione con il client
                 connection = sSocket.accept();
                 System.out.println("Connessione stabilita!");
                 System.out.println("Socket server: " + connection.getLocalSocketAddress());
                 System.out.println("Socket client: " + connection.getRemoteSocketAddress());
-                // stream in input (BufferedReader) e in output (PrintWriter)
-                // che ci permetteranno di scambiare messaggi tra client e server
-                Scanner in = new Scanner(connection.getInputStream());
-                PrintWriter out = new PrintWriter(connection.getOutputStream(), true);
-                String fromClient = null;
-                // quando arriva un messaggio dal client, e quindi lo stream non
-                // è vuoto, scrivo sullo stream di output l'orario
-                while ((fromClient = in.nextLine()) != null) {
-                    System.out.println(fromClient);
-                    if(fromClient.equals("orario")){
-                        out.println(getTime());
-                    }
-                    break;
-                }
-            }
-               catch(IOException e){
-                   System.err.println("Errore di I/O!");
+                // Attraverso questo metodo invia la risposta al client
+                inviaRisposta(connection);
+            } catch(IOException e){
+                   System.err.println("Errore nell'apertura del Socket!");
             }
             
-            //chiusura della connessione con il client
+            // Chiusura della connessione con il client
             try {
                 if (sSocket!=null) sSocket.close();
             } catch (IOException ex) {
@@ -68,6 +56,30 @@ public class ServerTCP {
             System.out.println("Connessione chiusa!");
         }
       }
+    
+    static void inviaRisposta(Socket connection){
+        try {
+            // Apertura degli stream in input (Scanner) e in Output (PrintWriter)
+            Scanner in = new Scanner(connection.getInputStream());
+            PrintWriter out = new PrintWriter(connection.getOutputStream(), true);
+            String fromClient = null;
+            // Quando il client invia un messaggio, quindi scrive nello stream
+            // di input del Server, si entra in questa condizione in cui il
+            // server scrive, a seconda della risposta, un messaggio nel
+            // suo stream di output per farlo arrivare al Client
+            if ((fromClient = in.nextLine()) != null) {
+                System.out.println(fromClient);
+                if(fromClient.equals("orario")){
+                    out.println(getTime());
+                }
+                else {
+                    out.println("Funzione non supportata al momento!");
+                }
+            }
+        } catch (IOException ex) {
+            System.err.println("Errore di I/O!");
+        }
+    }
     
     static String getTime(){
         DateFormat dateFormat = new SimpleDateFormat(" HH:mm:ss - dd/MM/yyyy");
