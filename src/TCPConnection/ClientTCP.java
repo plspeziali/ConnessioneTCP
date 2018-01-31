@@ -1,6 +1,6 @@
 /*
  * Versione dell'applicazione in cui lo stream output è gestito con un oggetto
- * PrintWriter e lo stream di input con BufferedReader
+ * PrintWriter e lo stream di input con Scanner
  */
 package TCPConnection;
 
@@ -12,8 +12,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.net.ConnectException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -25,11 +23,35 @@ public class ClientTCP {
      */
     public static void main(String[] args){
         Socket connection = null;
+        // Indirizzo di rete e porta sono inseriti staticamente
+        String serverAddress = "localhost";
+        int port = 2000;
         try{
-            connection = connetti("localhost", 2000);
+            // Crea il data socket per aprire una connessione TCP con il server
+            connection = new Socket(serverAddress, port);
+            System.out.println("Connessione aperta");
+            // Attraverso questo metodo avviene l'inserimento da parte
+            // dell'utente del tipo di richiesta che vuole effettuare
+            // sperando che il server supporti quel tipo
             String richiesta = userInput();
+            // Attraverso questo metodo avviene l'inoltro della richiesta al
+            // server sfruttando un semplice stream PrintWriter che scrive il
+            // contenuto della richiesta nello stream di output del socket
             inviaServer(connection,richiesta);
+            // Attraverso questo metodo il client attende la risposta del server
+            // ciclando all'interno di una condizione finché nello stream di
+            // input del socket non viene messo un valore dal server, a quel
+            // punto il contenuto dello stream viene stampato a schermo
             riceviServer(connection);
+        } catch (ConnectException e){
+            System.err.println("Server non disponibile!");
+        }
+        catch(UnknownHostException e1){
+            System.err.println("Errore DNS!");
+        }
+        catch(IOException e2){//
+            System.err.println(e2);
+            e2.printStackTrace();
         }
         finally{
             if (connection!=null) {
@@ -41,24 +63,6 @@ public class ClientTCP {
                 }
             }
         }
-    }
-    
-    public static Socket connetti(String serverAddress, int port){
-        Socket connection = null;
-        try {
-            connection = new Socket(serverAddress, port);
-        } catch(ConnectException e){
-            System.err.println("Server non disponibile!");
-        }
-        catch(UnknownHostException e1){
-            System.err.println("Errore DNS!");
-        }
-        catch(IOException e2){//
-            System.err.println(e2);
-            e2.printStackTrace();
-        }
-        System.out.println("Connessione aperta");
-        return connection;
     }
     
     public static String userInput(){
