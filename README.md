@@ -3,6 +3,7 @@ Struttura della repository e dei branch: mentre gli altri branch hanno ancora un
 ### master
 input gestito con Scanner, ouput gestito con PrintWriter.
 ![UML](https://i.imgur.com/KYEHRIF.png)
+![Schema](https://i.imgur.com/ZYVEkjO.png)
 ### BufferedReaderAndBufferedWriter
 input gestito con BufferedReader, output gestito con BufferedWriter
 Il BufferedWriter non funzionava inizialmente, il problema era il non inserimento di un carattere di newLine alla fine della trasmissione del messaggio (per qualche motivo). Risolto aggiungendo i metodi newLine() e flush().
