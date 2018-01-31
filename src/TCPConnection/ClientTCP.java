@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Versione dell'applicazione in cui lo stream output è gestito con un oggetto
+ * PrintWriter e lo stream di input con BufferedReader
  */
 package TCPConnection;
 
@@ -17,7 +16,7 @@ import java.net.ConnectException;
 
 /**
  *
- * @author Monica Ciuchetti
+ * @author Paolo Speziali
  */
 public class ClientTCP {
     /**
