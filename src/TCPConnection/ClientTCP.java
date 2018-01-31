@@ -27,7 +27,7 @@ public class ClientTCP {
         String serverAddress = "localhost";
         int port = 2000;
         try{
-            // Crea il data socket per aprire una connessione TCP con il server
+            // Crea il socket per aprire una connessione TCP con il server
             connection = new Socket(serverAddress, port);
             System.out.println("Connessione aperta");
             // Attraverso questo metodo avviene l'inserimento da parte
@@ -53,6 +53,9 @@ public class ClientTCP {
             System.err.println(e2);
             e2.printStackTrace();
         }
+        
+        // Chiusura della connessione con il server
+        
         finally{
             if (connection!=null) {
                 try {
