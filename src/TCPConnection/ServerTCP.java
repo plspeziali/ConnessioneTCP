@@ -1,6 +1,6 @@
 /*
  * Versione dell'applicazione in cui lo stream output è gestito con un oggetto
- * PrintWriter e lo stream di input con BufferedReader
+ * BufferedWriter e lo stream di input con BufferedReader
  */
 package TCPConnection;
 
@@ -46,15 +46,19 @@ public class ServerTCP {
                 // stream in input (BufferedReader) e in output (PrintWriter)
                 // che ci permetteranno di scambiare messaggi tra client e server
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                //BufferedWriter out = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-                PrintWriter out = new PrintWriter(connection.getOutputStream(), true);
+                BufferedWriter out = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
                 String fromClient = null;
                 // quando arriva un messaggio dal client, e quindi lo stream non
                 // è vuoto, scrivo sullo stream di output l'orario
                 while ((fromClient = in.readLine()) != null) {
                     System.out.println(fromClient);
                     if(fromClient.equals("orario")){
-                        out.println(getTime());
+                        // invio la risposta al client con BufferedWriter, il non funzionamento
+                        // era dato dal fatto che non aggiungevo un carattere di newLine alla fine
+                        // nemmeno io so perché ma funziona!
+                        out.write(getTime());
+                        out.newLine();
+                        out.flush();
                     }
                     break;
                 }
