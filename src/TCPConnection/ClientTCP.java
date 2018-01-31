@@ -12,6 +12,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.net.ConnectException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,59 +24,76 @@ public class ClientTCP {
      * @param args the command line arguments
      */
     public static void main(String[] args){
-        //oggetto da usare per realizzare la connessione TCP
         Socket connection = null;
-        //nome o IP del server
-        String serverAddress = "localhost";
-        //porta del server in ascolto
-        int port = 2000;
-
-        //apertura della connessione al server sulla porta specificata
         try{
-            connection = new Socket(serverAddress, port);
-            System.out.println("Connessione aperta");
-            // richiesta all'utente del tipo della richiesta
-            // (unica opzione funzionante: orario)
-            System.out.println("Digita il tipo della richiesta che vuoi effettuare (es. orario): ");
-            BufferedReader tastiera = new BufferedReader(new InputStreamReader(System.in));
-            String richiesta=tastiera.readLine();
-            // stream in input (BufferedReader) e in output (PrintWriter)
-            // che ci permetteranno di scambiare messaggi tra client e server
-            Scanner in = new Scanner(connection.getInputStream());
-                PrintWriter out = new PrintWriter(connection.getOutputStream(), true);
-            out.println(richiesta);
-            String fromServer = null;
-            // quando arriva un messaggio dal server, e quindi lo stream non
-            // è vuoto, visulaizzo quanto ricevuto e esco dalla condizione ciclica
-            while ((fromServer = in.nextLine()) != null) {
-                System.out.println("Server: " + fromServer);
-                break;
+            connection = connetti("localhost", 2000);
+            String richiesta = userInput();
+            inviaServer(connection,richiesta);
+            riceviServer(connection);
+        }
+        finally{
+            if (connection!=null) {
+                try {
+                    connection.close();
+                    System.out.println("Connessione chiusa!");
+                } catch (IOException ex) {
+                    System.out.println("Connessione chiusa!");
+                }
             }
         }
-        catch(ConnectException e){
+    }
+    
+    public static Socket connetti(String serverAddress, int port){
+        Socket connection = null;
+        try {
+            connection = new Socket(serverAddress, port);
+        } catch(ConnectException e){
             System.err.println("Server non disponibile!");
         }
         catch(UnknownHostException e1){
             System.err.println("Errore DNS!");
         }
-
         catch(IOException e2){//
             System.err.println(e2);
             e2.printStackTrace();
         }
-
-        //chiusura della connnessione
-        finally{
-                try {
-            if (connection!=null)
-                {
-                    connection.close();
-                    System.out.println("Connessione chiusa!");
-                }
-            }
-            catch(IOException e){
-                System.err.println("Errore nella chiusura della connessione!");
-            }
+        System.out.println("Connessione aperta");
+        return connection;
+    }
+    
+    public static String userInput(){
+        System.out.println("Digita il tipo della richiesta che vuoi effettuare (es. orario): ");
+        BufferedReader tastiera = new BufferedReader(new InputStreamReader(System.in));
+        String richiesta = null;
+        try {
+            richiesta = tastiera.readLine();
+        } catch (IOException ex) {
+            System.err.println("Errore nell'input da tastiera!");
+        }
+        return richiesta;
+    }
+    
+    public static void inviaServer(Socket connection, String richiesta){
+        PrintWriter out = null;
+        try {
+            out = new PrintWriter(connection.getOutputStream(), true);
+        } catch (IOException ex) {
+            System.err.println("Errore di I/O!");
+        }
+        out.println(richiesta);
+    }
+    
+    public static void riceviServer(Socket connection){
+        Scanner in = null;
+        try {
+            in = new Scanner(connection.getInputStream());
+        } catch (IOException ex) {
+            System.err.println("Errore di I/O!");
+        }
+        String fromServer = null;
+        while ((fromServer = in.nextLine()) != null) {
+            System.out.println("Server: " + fromServer);
+            break;
         }
     }
 }
