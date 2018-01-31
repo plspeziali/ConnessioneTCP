@@ -4,17 +4,14 @@
  */
 package TCPConnection;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 
 /**
  *
@@ -45,13 +42,12 @@ public class ServerTCP {
                 System.out.println("Socket client: " + connection.getRemoteSocketAddress());
                 // stream in input (BufferedReader) e in output (PrintWriter)
                 // che ci permetteranno di scambiare messaggi tra client e server
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                //BufferedWriter out = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+                Scanner in = new Scanner(connection.getInputStream());
                 PrintWriter out = new PrintWriter(connection.getOutputStream(), true);
                 String fromClient = null;
                 // quando arriva un messaggio dal client, e quindi lo stream non
                 // è vuoto, scrivo sullo stream di output l'orario
-                while ((fromClient = in.readLine()) != null) {
+                while ((fromClient = in.nextLine()) != null) {
                     System.out.println(fromClient);
                     if(fromClient.equals("orario")){
                         out.println(getTime());
