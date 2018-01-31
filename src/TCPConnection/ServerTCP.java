@@ -12,8 +12,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -57,7 +55,7 @@ public class ServerTCP {
         }
       }
     
-    static void inviaRisposta(Socket connection){
+    public static void inviaRisposta(Socket connection){
         try {
             // Apertura degli stream in input (Scanner) e in Output (PrintWriter)
             Scanner in = new Scanner(connection.getInputStream());
@@ -81,7 +79,7 @@ public class ServerTCP {
         }
     }
     
-    static String getTime(){
+    public static String getTime(){
         DateFormat dateFormat = new SimpleDateFormat(" HH:mm:ss - dd/MM/yyyy");
         Date date = new Date();
         return (dateFormat.format(date));
