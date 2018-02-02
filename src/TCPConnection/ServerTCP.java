@@ -51,12 +51,11 @@ public class ServerTCP {
                 String fromClient = null;
                 // quando arriva un messaggio dal client, e quindi lo stream non
                 // è vuoto, scrivo sullo stream di output l'orario
-                while ((fromClient = in.readLine()) != null) {
+                if ((fromClient = in.readLine()) != null) {
                     System.out.println(fromClient);
                     if(fromClient.equals("orario")){
                         out.println(getTime());
                     }
-                    break;
                 }
             }
                catch(IOException e){
