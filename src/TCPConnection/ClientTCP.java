@@ -98,9 +98,8 @@ public class ClientTCP {
             System.err.println("Errore di I/O!");
         }
         String fromServer = null;
-        while ((fromServer = in.nextLine()) != null) {
+        if ((fromServer = in.nextLine()) != null) {
             System.out.println("Server: " + fromServer);
-            break;
         }
     }
 }
