@@ -1,5 +1,5 @@
 # ConnessioneTCP
-Struttura della repository e dei branch: mentre gli altri branch hanno ancora una struttura disordinata e una filosofia di programmazione imperativa, il branch master è più ordinato e strutturato in classi e metodi, è inoltre commentato molto meglio. Tralasciando l'ordine la differenza sostanziale tra i vari branch è l'impiego di diverse tipologie di Stream, di seguito lascio la descrizione del contenuto di ogni branch, nella descrizione del branch master sono contenuti anche i diagrammi delle classi e gli schemi relativi all'esercizio.
+Struttura della repository e dei branch: mentre gli altri branch hanno ancora una struttura disordinata e una filosofia di programmazione imperativa, il branch master è più ordinato e strutturato in classi e metodi, è inoltre commentato molto meglio. Tralasciando l'ordine la differenza sostanziale tra i vari branch è l'impiego di diverse tipologie di Stream, di seguito lascio la descrizione del contenuto di ogni branch, nella descrizione del branch master sono contenuti anche il diagramma delle classi e gli schemi relativi all'esercizio.
 ### master
 input gestito con Scanner, ouput gestito con PrintWriter.
 ![UML](https://i.imgur.com/KYEHRIF.png)
