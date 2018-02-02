@@ -52,9 +52,8 @@ public class ClientTCP {
             String fromServer = null;
             // quando arriva un messaggio dal server, e quindi lo stream non
             // è vuoto, visulaizzo quanto ricevuto e esco dalla condizione ciclica
-            while ((fromServer = in.readLine()) != null) {
+            if ((fromServer = in.readLine()) != null) {
                 System.out.println("Server: " + fromServer);
-                break;
             }
         }
         catch(ConnectException e){
