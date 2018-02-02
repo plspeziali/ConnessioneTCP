@@ -10,4 +10,4 @@ Il BufferedWriter non funzionava inizialmente, il problema era il non inseriment
 ### BufferedReaderAndPrintWriter
 input gestito con BufferedReader, output gestito con PrintWriter
 ### unstable
-branch dedicato alla sperimentazione e alla prova, utilizzato principalemnte per effettuare la conversione a oggetti del codice
+branch dedicato alla sperimentazione e alla prova, utilizzato principalmente per effettuare la conversione a oggetti del codice
