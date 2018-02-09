@@ -5,7 +5,6 @@
  */
 package TCPThreads;
 
-import static TCPConnection.ServerTCP.inviaRisposta;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -17,15 +16,17 @@ import java.util.Scanner;
 
 /**
  *
- * @author paolo
+ * @author Paolo Speziali
  */
 public class Server extends Thread{
     
+    final String ANSI_BLUE = "\u001B[34m";
     int port;
-    ServerSocket sSocket = null;
+    ServerSocket sSocket;
     Socket connection;
     
     public Server(int port){
+        sSocket = null;
         this.port=port;
     }
     @Override
@@ -34,12 +35,12 @@ public class Server extends Thread{
             try{
                 // Il server si mette in ascolto sulla porta voluta
                 sSocket = new ServerSocket(port);
-                System.out.println("In attesa di connessioni!");
+                System.out.println(ANSI_BLUE+"In attesa di connessioni!");
                 // Si stabilisce la connessione con il client
                 connection = sSocket.accept();
-                System.out.println("Connessione stabilita!");
-                System.out.println("Socket server: " + connection.getLocalSocketAddress());
-                System.out.println("Socket client: " + connection.getRemoteSocketAddress());
+                System.out.println(ANSI_BLUE+"Connessione stabilita!");
+                System.out.println(ANSI_BLUE+"Socket server: " + connection.getLocalSocketAddress());
+                System.out.println(ANSI_BLUE+"Socket client: " + connection.getRemoteSocketAddress());
                 // Attraverso questo metodo invia la risposta al client
                 inviaRisposta(connection);
             } catch(IOException e){
@@ -49,7 +50,7 @@ public class Server extends Thread{
         }
     }
     
-    public static void inviaRisposta(Socket connection){
+    public void inviaRisposta(Socket connection){
         try {
             // Apertura degli stream in input (Scanner) e in Output (PrintWriter)
             Scanner in = new Scanner(connection.getInputStream());
@@ -81,9 +82,9 @@ public class Server extends Thread{
     
     public void chiudi(){
         // Chiusura della connessione con il client
-        try {
+         try {
             if (sSocket!=null) sSocket.close();
-            System.out.println("Connessione chiusa!");
+            System.out.println(ANSI_BLUE+"Connessione chiusa!");
         } catch (IOException ex) {
             System.err.println("Errore nella chiusura della connessione!");
         }

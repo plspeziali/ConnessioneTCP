@@ -7,7 +7,7 @@ package TCPThreads;
 
 /**
  *
- * @author paolo
+ * @author Paolo Speziali
  */
 public class avvia {
 
@@ -16,6 +16,10 @@ public class avvia {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Server s = new Server(2000);
+        Client c = new Client("localhost",2000);
+        s.start();
+        c.start();
     }
     
 }
